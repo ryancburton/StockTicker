@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using StockTicker.Service.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace StockTicker.Services.DAL.Service
+namespace StockTicker.Service.DAL.Services
 {
     public class CompanyDBService : ICompanyDBService
     {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using StockTicker.Service.DAL.Models;
-using StockTicker.Service.DAL.Service;
+using StockTicker.Service.DAL.Services;
 using Microsoft.OpenApi.Models;
 using MediatR;
 using System.Reflection;

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MediatR;
 using StockTicker.Service.DAL.Models;
-using StockTicker.Service.DAL.Service;
+using StockTicker.Service.DAL.Services;
 
 namespace StockTicker.Domain.Queries.Data
 {

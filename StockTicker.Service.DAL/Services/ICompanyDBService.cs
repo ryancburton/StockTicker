@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace StockTicker.Services.DAL.Service
+namespace StockTicker.Service.DAL.Services
 {
     public interface ICompanyDBService
     {
