@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTicker.Web", "StockTicker\StockTicker.Web.csproj", "{BA8FCDE8-EA53-43E9-9EA4-DE52D06D70BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTicker.Service", "StockTicker.Service\StockTicker.Service.csproj", "{346622D3-2BFD-4EC4-AF27-347F91F215BD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTickerUnitTests", "StockTickerUnitTests\StockTickerUnitTests.csproj", "{62202AA4-4960-418F-8015-979F5AFBFA2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6566230B-6E52-4ECB-8A96-F0D7DB4E8EAD}"
@@ -15,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Deploying StockTicker to Azure.docx = Deploying StockTicker to Azure.docx
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTicker.Domain", "StockTicker.Domain\StockTicker.Domain.csproj", "{0D668762-E127-4E27-8EB5-C252A783C329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTicker.Service.DAL", "StockTicker.Service.DAL1\StockTicker.Service.DAL.csproj", "{33F43748-DDAF-4FA9-8107-0F1D5C2191DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +28,18 @@ Global
 		{BA8FCDE8-EA53-43E9-9EA4-DE52D06D70BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA8FCDE8-EA53-43E9-9EA4-DE52D06D70BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA8FCDE8-EA53-43E9-9EA4-DE52D06D70BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{346622D3-2BFD-4EC4-AF27-347F91F215BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{346622D3-2BFD-4EC4-AF27-347F91F215BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{346622D3-2BFD-4EC4-AF27-347F91F215BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{346622D3-2BFD-4EC4-AF27-347F91F215BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62202AA4-4960-418F-8015-979F5AFBFA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62202AA4-4960-418F-8015-979F5AFBFA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62202AA4-4960-418F-8015-979F5AFBFA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62202AA4-4960-418F-8015-979F5AFBFA2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D668762-E127-4E27-8EB5-C252A783C329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D668762-E127-4E27-8EB5-C252A783C329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D668762-E127-4E27-8EB5-C252A783C329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D668762-E127-4E27-8EB5-C252A783C329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F43748-DDAF-4FA9-8107-0F1D5C2191DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F43748-DDAF-4FA9-8107-0F1D5C2191DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F43748-DDAF-4FA9-8107-0F1D5C2191DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F43748-DDAF-4FA9-8107-0F1D5C2191DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

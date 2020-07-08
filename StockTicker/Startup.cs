@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using StockTicker.Service.Models;
-using StockTicker.Service.Services;
+using StockTicker.Service.DAL.Models;
+using StockTicker.Service.DAL.Service;
 using Microsoft.OpenApi.Models;
+using MediatR;
+using System.Reflection;
+using StockTicker.Domain.Commands.Data;
+using StockTicker.Domain.Queries.Data;
+using StockTicker.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace StockTicker
 {
@@ -23,13 +29,27 @@ namespace StockTicker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc().AddXmlSerializerFormatters();
+
+            services.AddMediatR(typeof(GetDataAllQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateCompanyCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(UpdateCompanyCommandHandler).GetTypeInfo().Assembly);
 
             services.AddScoped<ICompanyDBService, CompanyDBService>();
             
             services.AddDbContext<CompanyContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("StockTickerConnection")));
-            
+
+            services.AddIdentity<ApplicationUser, IdentityRole>();
+            //AddEntitFrameworkStores<ApplicationDbContext>()
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v2", new OpenApiInfo
@@ -64,12 +84,18 @@ namespace StockTicker
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
 
-            app.UseMvc(routes => routes.MapRoute(
-              name: "default",
-              template: "api/{controller}/{action}/{id?}",
-              defaults: new { controller = "Company", action = "GetAllCompanies" }
-            ));
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "api/{controller}/{action}/{id?}",
+                    defaults: new { controller = "AnalyticalData", action = "GetAnalyticalDataAll" });
+            });
         }
     }
 }

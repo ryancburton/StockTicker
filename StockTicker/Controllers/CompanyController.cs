@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using StockTicker.Service.Services;
-using StockTicker.Service.Models;
+using MediatR;
+using StockTicker.Service.DAL.Models;
+using StockTicker.Domain.Queries.Data;
+using StockTicker.Domain.Commands.Data;
 
 namespace StockTicker.Controllers
 {
@@ -12,15 +14,16 @@ namespace StockTicker.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly ICompanyDBService _companyDBService;
-        public CompanyController(ICompanyDBService companyDBService)
+        private readonly IMediator _mediator;
+
+        public CompanyController(IMediator mediator)
         {
-            _companyDBService = companyDBService;
+            _mediator = mediator;
         }
 
         [HttpGet("GetAllCompanies")]
         [ProducesResponseType(typeof(IEnumerable<Company>), 200)]
-        public Task<IEnumerable<Company>> GetAllCompanies() => _companyDBService.GetAllCompaniesAsync();
+        public Task<IEnumerable<Company>> GetAllCompanies() => _mediator.Send(new GetAllCompaniesQuery());
 
         // GET api/company/GetCompanyId
         [HttpGet("GetCompanyById/id={id}", Name = nameof(GetCompanyById))]
@@ -28,7 +31,7 @@ namespace StockTicker.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetCompanyById(int id)
         {
-            Company company = await _companyDBService.FindCompanyByIdAsync(id);
+            Company company = await _mediator.Send(new GetCompanyByIdQuery(id));
             if (company == null)
             {
                 return NotFound();
@@ -45,7 +48,7 @@ namespace StockTicker.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetCompanyByIsin(string isin)
         {
-            Company company = await _companyDBService.FindCompanyByIsinAsync(isin);
+            Company company = await _mediator.Send(new GetCompanyByIsinQuery(isin));
             if (company == null)
             {
                 return NotFound();
@@ -69,7 +72,7 @@ namespace StockTicker.Controllers
 
             try
             {
-                await _companyDBService.AddNewCompanyAsync(company);
+                await _mediator.Send(new CreateCompanyCommand(company));
                 return CreatedAtRoute(nameof(GetCompanyById), new { id = company.CompanyId }, company);
             }
             catch(Exception ex)
@@ -89,14 +92,14 @@ namespace StockTicker.Controllers
                 return BadRequest();
             }
 
-            Company existingCompany = _companyDBService.FindCompanyByIsinAsync(company.Isin).Result;
+            Company existingCompany = _mediator.Send(new GetCompanyByIsinQuery(company.Isin)).Result;
 
             if (existingCompany == null)
             {
                 return NotFound();
             }
 
-            await _companyDBService.UpdateExsistingCompanyAsync(company);
+            await _mediator.Send(new UpdateCompanyCommand(company));
             return new NoContentResult();
         }
     }
