@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StockTicker.Service.DAL1\StockTicker.Service.DAL.csproj" />
     <ProjectReference Include="..\StockTicker.Service.DAL\StockTicker.Service.DAL.csproj" />
   </ItemGroup>
 
