@@ -43,13 +43,11 @@ namespace StockTicker
             services.AddMediatR(typeof(CreateCompanyCommandHandler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(UpdateCompanyCommandHandler).GetTypeInfo().Assembly);
 
-            services.AddScoped<ICompanyDBService, CompanyDBService>();
-            
+            services.AddScoped<ICompanyDBService, CompanyDBService>();            
             services.AddDbContext<CompanyContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("StockTickerConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>();
-            //AddEntitFrameworkStores<ApplicationDbContext>()
-
+            
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v2", new OpenApiInfo
