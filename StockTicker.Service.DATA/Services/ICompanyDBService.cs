@@ -1,9 +1,9 @@
-﻿using StockTicker.Service.DAL.Models;
-using CarParts.Service.DAL.Models;
+﻿using StockTicker.Service.Data.Models;
+using CarParts.Service.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace StockTicker.Service.DAL.Services
+namespace StockTicker.Service.Data.Services
 {
     public interface ICompanyDBService
     {

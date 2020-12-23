@@ -2,8 +2,8 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using StockTicker.Service.DAL.Models;
-using StockTicker.Service.DAL.Services;
+using StockTicker.Service.Data.Models;
+using StockTicker.Service.Data.Services;
 using System.Linq;
 
 namespace StockTickerUnitTests

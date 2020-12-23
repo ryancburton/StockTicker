@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using StockTicker.Service.DAL.Models;
+using StockTicker.Service.Data.Models;
 using MediatR;
 
 namespace StockTicker.Domain.Queries.Data

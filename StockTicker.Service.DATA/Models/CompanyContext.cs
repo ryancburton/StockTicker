@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CarParts.Service.DAL.Models;
+using CarParts.Service.Data.Models;
 
-namespace StockTicker.Service.DAL.Models
+namespace StockTicker.Service.Data.Models
 {
     public class CompanyContext : DbContext
     {

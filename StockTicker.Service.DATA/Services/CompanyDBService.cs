@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StockTicker.Service.DAL.Models;
-using CarParts.Service.DAL.Models;
+using StockTicker.Service.Data.Models;
+using CarParts.Service.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace StockTicker.Service.DAL.Services
+namespace StockTicker.Service.Data.Services
 {
     public class CompanyDBService : ICompanyDBService
     {

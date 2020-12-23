@@ -5,20 +5,43 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using StockTicker.Service.DAL.Models;
-using StockTicker.Service.DAL.Services;
+using StockTicker.Service.Data.Models;
+using StockTicker.Service.Data.Services;
+using CarParts.Service.Data.Models;
 using Microsoft.OpenApi.Models;
 using MediatR;
 using System.Reflection;
 using StockTicker.Domain.Commands.Data;
 using StockTicker.Domain.Queries.Data;
+using CarParts.Domain.Commands.Data;
 using StockTicker.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Web.Http.Filters;
+using System.Web.Http.Controllers;
+using System.Net.Http;
 
 namespace StockTicker
 {
     public class Startup
     {
+        public class RequireHttpsAttribute : AuthorizationFilterAttribute
+        {
+            public override void OnAuthorization(HttpActionContext actionContext)
+            {
+                if (actionContext.Request.RequestUri.Scheme != System.Uri.UriSchemeHttps)
+                {
+                    actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden)
+                    {
+                        ReasonPhrase = "HTTPS Required for this call"
+                    };
+                }
+                else
+                {
+                    base.OnAuthorization(actionContext);
+                }
+            }
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,10 +64,19 @@ namespace StockTicker
 
             services.AddMediatR(typeof(GetDataAllQueryHandler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(CreateCompanyCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateCarPartsCommandHandler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(UpdateCompanyCommandHandler).GetTypeInfo().Assembly);
 
-            services.AddScoped<ICompanyDBService, CompanyDBService>();            
+            services.AddSingleton(Configuration);
+
+            services.AddScoped<ICompanyDBService, CompanyDBService>();
+            string conString = Configuration.GetConnectionString("StockTickerConnection");
             services.AddDbContext<CompanyContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("StockTickerConnection")));
+
+            /*services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(typeof(RequireHttpsAttribute));
+            });*/
 
             services.AddIdentity<ApplicationUser, IdentityRole>();
             
@@ -81,7 +113,7 @@ namespace StockTicker
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseCookiePolicy();
