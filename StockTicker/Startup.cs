@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using StockTicker.Service.DAL.Models;
-using StockTicker.Service.DAL.Services;
+using StockTicker.Service.DATA.Models;
+using StockTicker.Service.DATA.Services;
 using Microsoft.OpenApi.Models;
 using MediatR;
 using System.Reflection;
@@ -14,6 +14,7 @@ using StockTicker.Domain.Commands.Data;
 using StockTicker.Domain.Queries.Data;
 using StockTicker.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Configuration;
 
 namespace StockTicker
 {

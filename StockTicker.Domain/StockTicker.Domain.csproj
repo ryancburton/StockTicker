@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StockTicker.Service.DAL\StockTicker.Service.DAL.csproj" />
+    <ProjectReference Include="..\StockTicker.Service.DATA\StockTicker.Service.DATA.csproj" />
   </ItemGroup>
 
 </Project>

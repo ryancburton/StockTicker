@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using StockTicker.Service.DAL.Models;
+using StockTicker.Service.DATA.Models;
 using System.Threading;
-using StockTicker.Service.DAL.Services;
+using StockTicker.Service.DATA.Services;
 using System.Threading.Tasks;
 
 namespace StockTicker.Domain.Commands.Data
