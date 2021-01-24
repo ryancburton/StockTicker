@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using StockTicker.Service.Data.Models;
-using CarParts.Service.Data.Models;
-using CarParts.Domain.Commands.Data;
+using StockTicker.Service.DATA.Models;
 using StockTicker.Domain.Queries.Data;
 using StockTicker.Domain.Commands.Data;
 
 namespace StockTicker.Controllers
-{   
-
+{
     [Produces("application/json", "application/xml")]
     [Route("api/[controller]")]
     [ApiController]
@@ -62,32 +59,6 @@ namespace StockTicker.Controllers
             }
         }
 
-        [HttpPost("PostCarPart/")]
-        [ProducesResponseType(typeof(CarPart), 201)]
-        [ProducesResponseType(400)]
-        [RequireHttps]
-        public /*async Task<IActionResult>*/ int PostCarPart([FromBody] CarPart carpart /*string part*/)
-        {
-            Console.Write("working!");
-            return 1;
-            //CarPart carpart = new CarPart();
-
-            /*if (carpart == null)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                await _mediator.Send(new CreateCarPartsCommand(carpart));
-                return CreatedAtRoute(nameof(PostCarPart), new { id = carpart.Id }, carpart);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }*/
-        }
-
         // POST api/values
         [HttpPost("PostCompany/")]
         [ProducesResponseType(typeof(Company), 201)]
@@ -102,7 +73,7 @@ namespace StockTicker.Controllers
             try
             {
                 await _mediator.Send(new CreateCompanyCommand(company));
-                return CreatedAtRoute(nameof(PostCompany), new { id = company.CompanyId }, company);
+                return CreatedAtRoute(nameof(GetCompanyById), new { id = company.CompanyId }, company);
             }
             catch(Exception ex)
             {

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StockTicker.Service.Data.Models;
-using CarParts.Service.Data.Models;
+using StockTicker.Service.DATA.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace StockTicker.Service.Data.Services
+namespace StockTicker.Service.DATA.Services
 {
     public class CompanyDBService : ICompanyDBService
     {
@@ -21,12 +20,6 @@ namespace StockTicker.Service.Data.Services
         public async Task<Company> FindCompanyByIdAsync(int id) => await _companyContext.Company.SingleOrDefaultAsync(c => c.CompanyId == id);
 
         public async Task<Company> FindCompanyByIsinAsync(string isin) => await _companyContext.Company.SingleOrDefaultAsync(c => c.Isin == isin);
-
-        public async Task AddNewCarPartAsync(CarPart carpart)
-        {
-            await _companyContext.CarPart.AddAsync(carpart).ConfigureAwait(false);
-            await _companyContext.SaveChangesAsync().ConfigureAwait(false);
-        }
 
         public async Task AddNewCompanyAsync(Company company)
         {

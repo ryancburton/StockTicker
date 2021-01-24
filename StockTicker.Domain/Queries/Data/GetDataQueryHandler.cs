@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using MediatR;
-using StockTicker.Service.Data.Models;
-using StockTicker.Service.Data.Services;
+using StockTicker.Service.DATA.Models;
+using StockTicker.Service.DATA.Services;
 
 namespace StockTicker.Domain.Queries.Data
 {

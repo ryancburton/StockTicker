@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CarParts.Service.Data.Models;
 
-namespace StockTicker.Service.Data.Models
+namespace StockTicker.Service.DATA.Models
 {
     public class CompanyContext : DbContext
     {
@@ -11,6 +10,5 @@ namespace StockTicker.Service.Data.Models
         }
 
         public DbSet<Company> Company { get; set; }
-        public DbSet<CarPart> CarPart { get; set; }
     }
 }
