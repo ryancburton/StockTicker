@@ -17,7 +17,7 @@ namespace CarParts.Domain.Commands.Data
 
         public async Task<CarPart> Handle(CreateCarPartsCommand request, CancellationToken cancellationToken)
         {
-            await _companyDBService.AddNewCarPartAsync(request._carPart);
+            //await _companyDBService.AddNewCompanyAsync(request._carPart);
             return request._carPart;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using StockTicker.Domain.Response;
-using StockTicker.Service.DATA.Models;
+using StockTicker.Service.Data.Models;
 
 namespace StockTicker.Domain.Commands.Data
 {
