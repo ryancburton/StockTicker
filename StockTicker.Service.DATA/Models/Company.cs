@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StockTicker.Service.DATA.Models
+namespace StockTicker.Service.Data.Models
 {
     public class Company
     {

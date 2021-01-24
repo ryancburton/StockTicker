@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace StockTicker.Service.DATA.Models
+namespace StockTicker.Service.Data.Models
 {
     public class CompanyContext : DbContext
     {

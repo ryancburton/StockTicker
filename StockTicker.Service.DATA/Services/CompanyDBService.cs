@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StockTicker.Service.DATA.Models;
+using StockTicker.Service.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace StockTicker.Service.DATA.Services
+namespace StockTicker.Service.Data.Services
 {
     public class CompanyDBService : ICompanyDBService
     {

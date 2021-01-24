@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StockTicker.Domain\StockTicker.Domain.csproj" />
-    <ProjectReference Include="..\StockTicker.Service.DATA\StockTicker.Service.DATA.csproj" />
+    <ProjectReference Include="..\StockTicker.Service.DATA\StockTicker.Service.Data.csproj" />
   </ItemGroup>
 
 </Project>

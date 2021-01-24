@@ -1,9 +1,9 @@
-﻿using StockTicker.Service.DATA.Models;
+﻿using StockTicker.Service.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace StockTicker.Service.DATA.Services
+namespace StockTicker.Service.Data.Services
 {
     public interface ICompanyDBService
     {
