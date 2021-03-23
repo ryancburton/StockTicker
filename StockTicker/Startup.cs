@@ -54,33 +54,25 @@ namespace StockTicker
                 options.SwaggerDoc("v2", new OpenApiInfo
                 {
                     Title = "CompanyContext",
-                    Version = "v2",
-                    Description = "Glass Lewis Code Challenge"
+                    Version = "v2"
                 });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+            
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
 
-                app.UseSwagger();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-                // specifying the Swagger JSON endpoint.
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Glass Lewis Code Challenge");
-                });
-            }
-            else
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Restful API");
+            });
+           
 
             app.UseHttpsRedirection();
             app.UseRouting();
