@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using StockTicker.Service.Data.Models;
+using StockTicker.Service.Data.Services;
 using StockTicker.Domain.Queries.Data;
 using StockTicker.Domain.Commands.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StockTicker.Controllers
 {
@@ -15,10 +21,12 @@ namespace StockTicker.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICompanyDBService _companyDBService;
 
-        public CompanyController(IMediator mediator)
+        public CompanyController(IMediator mediator, ICompanyDBService companyDBService)
         {
             _mediator = mediator;
+            _companyDBService = companyDBService;
         }
 
         [HttpGet("GetAllCompanies")]
@@ -59,7 +67,33 @@ namespace StockTicker.Controllers
             }
         }
 
+        // GET api/company/GetCompanyId
+        ///search_string={search_string}&left_len={left_len}&right_len={right_len}
+        [HttpGet("SearchText", Name = nameof(SearchText))]
+        [ProducesResponseType(typeof(String), 200)]
+        [ProducesResponseType(404)]
+        public string SearchText(string search_string/*, int left_len = 20, int right_len = 20*/)
+        {
+            return _companyDBService.SearchText(search_string, 20, 20/*left_len, right_len*/);
+        }
+
         // POST api/values
+        [Authorize]
+        [HttpPost("PostPart/")]
+        [ProducesResponseType(typeof(Company), 201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> PostPart(/*[FromBody]*/ string part)
+        {
+            if (part == null)
+            {
+                Debug.WriteLine("part == null");
+                return BadRequest();
+            }
+            return new EmptyResult();
+        }
+
+        // POST api/values
+        [Authorize]
         [HttpPost("PostCompany/")]
         [ProducesResponseType(typeof(Company), 201)]
         [ProducesResponseType(400)]
@@ -67,6 +101,7 @@ namespace StockTicker.Controllers
         {
             if (company == null)
             {
+                Console.WriteLine("company == null");
                 return BadRequest();
             }
 
@@ -77,10 +112,12 @@ namespace StockTicker.Controllers
             }
             catch(Exception ex)
             {
+                Console.WriteLine("BadRequest");
                 return BadRequest(ex);
             }
         }
 
+        [Authorize]
         [HttpPut("PutCompany/")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using StockTicker.Service.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 
 namespace StockTicker.Service.Data.Services
 {
@@ -20,6 +23,22 @@ namespace StockTicker.Service.Data.Services
         public async Task<Company> FindCompanyByIdAsync(int id) => await _companyContext.Company.SingleOrDefaultAsync(c => c.CompanyId == id);
 
         public async Task<Company> FindCompanyByIsinAsync(string isin) => await _companyContext.Company.SingleOrDefaultAsync(c => c.Isin == isin);
+
+        //[DbFunction("NaturalGroundingVideosModel.Store", "fn_GetRatingValue")]
+        public string SearchText(string search_string, int left_len, int right_len)
+        {
+            List<ObjectParameter> parameters = new List<ObjectParameter>(4);
+            parameters.Add(new ObjectParameter("search_string", search_string));
+            parameters.Add(new ObjectParameter("thesis", ""));
+            parameters.Add(new ObjectParameter("left_len", left_len));
+            parameters.Add(new ObjectParameter("right_len", right_len));
+            
+            String query = String.Format("select * from [dbo].fn_SearchText(\'{0}\', '', {1}, {2})", search_string, left_len, right_len);
+
+            var res = _companyContext.Thesis.FromSqlRaw(query).FirstOrDefault();
+            
+            return res.Text;
+        }
 
         public async Task AddNewCompanyAsync(Company company)
         {

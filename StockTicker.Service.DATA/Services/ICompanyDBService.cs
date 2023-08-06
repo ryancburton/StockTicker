@@ -10,6 +10,7 @@ namespace StockTicker.Service.Data.Services
         Task<IEnumerable<Company>> GetAllCompaniesAsync();
         Task<Company> FindCompanyByIdAsync(int id);
         Task<Company> FindCompanyByIsinAsync(string isin);
+        string SearchText(string search_string, int left_len, int right_len);
         Task AddNewCompanyAsync(Company company);
         Task UpdateExsistingCompanyAsync(Company company);
     }
