@@ -24,8 +24,7 @@ namespace StockTickerUnitTests.Tests.Helpers
             builder.ConfigureServices(services =>
             {
                 // Create a new service provider.
-                var serviceProvider = new ServiceCollection()
-                      .AddEntityFrameworkInMemoryDatabase();
+                var serviceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase();
 
                 // Add a database context using an in-memory database for testing.
                 services.AddDbContext<CompanyContext>(options =>
