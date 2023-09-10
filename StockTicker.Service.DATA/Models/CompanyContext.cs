@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace StockTicker.Service.Data.Models
 {
@@ -10,6 +11,5 @@ namespace StockTicker.Service.Data.Models
         }
 
         public DbSet<Company> Company { get; set; }
-        public DbSet<Thesis> Thesis { get; set; }
     }
 }

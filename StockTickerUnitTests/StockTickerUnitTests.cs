@@ -1,107 +1,118 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using StockTicker;
 using StockTicker.Service.Data.Models;
 using StockTicker.Service.Data.Services;
-using System.Linq;
+using StockTickerUnitTests.Tests.Helpers;
+using static StockTickerUnitTests.Tests.Helpers.TestUtils;
 
 namespace StockTickerUnitTests
 {
     [TestClass]
     public sealed class StockTickerUnitTests : IDisposable
     {
-        private CompanyContext _companyContext;
+        private readonly CustomWebApplicationFactory<Startup> _factory;
+        private readonly HttpClient _client;
+        private Uri _uri;
 
         public StockTickerUnitTests()
-        {
-            //Database should be mocked in Memory db
-            //Calling Controller would be more of an integration test than Unit test
-            InitContext();
+        {       
+            _factory = new CustomWebApplicationFactory<Startup>();
+            _client = _factory.CreateClient();
         }
 
-        private void InitContext()
+        [TestMethod]
+        public void GetAllCompanies()
         {
-            var builder = new DbContextOptionsBuilder<CompanyContext>().UseInMemoryDatabase("CompanyDB");
-            _companyContext = new CompanyContext(builder.Options);
+            _uri = new Uri(_client.BaseAddress, $"/api/company/GetAllCompanies");
+            var httpResponse = _client.GetAsync(_uri).Result;
+            httpResponse.EnsureSuccessStatusCode();
 
-            Company company = new Company
-            {
-                Name = "ABC Inc.",
-                Exchange = "LSE",
-                Ticker = "ABC",
-                Isin = "AB123456789",
-                website = "http://www.abc.com"
-            };
+            var stringResponse = httpResponse.Content.ReadAsStringAsync();
+            var company = JsonConvert.DeserializeObject<IEnumerable<Company>>(stringResponse.Result);
 
-            if (!_companyContext.Company.Any())
-            {
-                _companyContext.Company.Add(company);
-                _companyContext.SaveChangesAsync();
-            }
+            Assert.AreEqual(company.FirstOrDefault().Name, "ABC Inc.");
         }
 
         [TestMethod]
         public void FindCompanyById()
         {
-            var companyDBService = new CompanyDBService(_companyContext);
+            _uri = new Uri("/api/company/GetCompanyById/id=1", UriKind.Relative);
+            var httpResponse = _client.GetAsync(_uri).Result;
+            httpResponse.EnsureSuccessStatusCode();
 
-            var firstCompany = companyDBService.GetAllCompaniesAsync().Result.FirstOrDefault<Company>();
+            var stringResponse = httpResponse.Content.ReadAsStringAsync();
+            var company = JsonConvert.DeserializeObject<Company>(stringResponse.Result);
 
-            var company = companyDBService.FindCompanyByIdAsync(firstCompany.CompanyId);
-            Assert.AreEqual(company.Result.Name, firstCompany.Name);
+            Assert.AreEqual(company.Name, "ABC Inc.");
         }
 
         [TestMethod]
-        public async Task FindCompanyByIsin()
+        public void FindCompanyByIsin()
         {
-            var companyDBService = new CompanyDBService(_companyContext);
+            _uri = new Uri("/api/company/GetCompanyByIsin/Isin=AB123456789", UriKind.Relative);
+            var httpResponse = _client.GetAsync(_uri).Result;
+            httpResponse.EnsureSuccessStatusCode();            
 
-            var firstCompany1 = companyDBService.GetAllCompaniesAsync();
-            var firstCompany = companyDBService.GetAllCompaniesAsync().Result.FirstOrDefault<Company>();
+            var stringResponse = httpResponse.Content.ReadAsStringAsync();
+            var company = JsonConvert.DeserializeObject<Company>(stringResponse.Result);
 
-            var company = await companyDBService.FindCompanyByIsinAsync(firstCompany.Isin);
-            Assert.AreEqual(company.Name, firstCompany.Name);
+            Assert.AreEqual(company.Isin, "AB123456789");
         }
 
         [TestMethod]
         public async Task AddNewCompany()
         {
-            var companyDBService = new CompanyDBService(_companyContext);
-
-            Company company = new Company
+            var request = new
             {
-                Name = "XYZ Inc.",
-                Exchange = "LSE",
-                Ticker = "XYZ",
-                Isin = "XY123456789",
-                website = "http://www.xyz.com"
+                Url = "api/company/PostCompany/",
+                Body = new
+                {                    
+                    Name = "XYZ Inc.",
+                    Exchange = "LSE",
+                    Ticker = "XYZ",
+                    Isin = "XY123456789",
+                    website = "http://www.xyz.com"
+                }
             };
 
-            await companyDBService.AddNewCompanyAsync(company).ConfigureAwait(false);
-            var newCompany = await companyDBService.FindCompanyByIsinAsync(company.Isin);
-            
-            Assert.AreEqual(newCompany.Name, company.Name);
+            var response = await _client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+            response.EnsureSuccessStatusCode();
+
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.Created);
         }
 
         [TestMethod]
         public async Task UpdateCompany()
         {
-            var companyDBService = new CompanyDBService(_companyContext);
+            var request = new
+            {
+                Url = "api/company/PutCompany/",
+                Body = new
+                {
+                    Name = "XYZ Limited",
+                    Exchange = "NYE",
+                    Ticker = "XYZ",
+                    Isin = "XY123456789",
+                    website = "http://www.xyz.com"
+                }
+            };
 
-            var firstCompany = companyDBService.GetAllCompaniesAsync().Result.FirstOrDefault<Company>();
+            var response = await _client.PutAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+            response.EnsureSuccessStatusCode();
 
-            firstCompany.Name = "Hostile Take over";
-
-            await companyDBService.UpdateExsistingCompanyAsync(firstCompany).ConfigureAwait(false);
-            var updatedCompany = await companyDBService.FindCompanyByIsinAsync(firstCompany.Isin);
-
-            Assert.AreEqual(firstCompany.Name, updatedCompany.Name);
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.NoContent);
         }
 
         public void Dispose()
         {
-            _companyContext.Dispose();
+            _factory?.Dispose();
+            _client?.Dispose();
         }
     }
 }

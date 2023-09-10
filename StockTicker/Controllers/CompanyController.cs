@@ -67,16 +67,6 @@ namespace StockTicker.Controllers
             }
         }
 
-        // GET api/company/GetCompanyId
-        ///search_string={search_string}&left_len={left_len}&right_len={right_len}
-        [HttpGet("SearchText", Name = nameof(SearchText))]
-        [ProducesResponseType(typeof(String), 200)]
-        [ProducesResponseType(404)]
-        public string SearchText(string search_string/*, int left_len = 20, int right_len = 20*/)
-        {
-            return _companyDBService.SearchText(search_string, 20, 20/*left_len, right_len*/);
-        }
-
         // POST api/values
         [Authorize]
         [HttpPost("PostPart/")]
